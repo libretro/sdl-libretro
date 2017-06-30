@@ -66,9 +66,7 @@ int
 SDL_SYS_JoystickInit(void)
 {
 	int i = 0;
-    SDL_numjoysticks = 4;
-
-	printf("SDL_SYS_JoystickInit\n");
+	SDL_numjoysticks = 4;
 
 	SDL_zero( joy_data);
 
