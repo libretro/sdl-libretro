@@ -9,6 +9,9 @@ I've tested it with some emulators: vice/hatari/dosbox ...
 It works more or less well, problems with sound on windows
 and crash at the exit of the program with libco.
 
+SDL2-libretro: Start of the SDL2 fork is over at:
+https://github.com/RobLoach/SDL/tree/libretro
+
 ----------------------------------------------------------------------------------------------------
 
 
