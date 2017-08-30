@@ -20,8 +20,7 @@ LIBS = -fPIC
 
 OBJS = SDL_framerate.o SDL_gfxPrimitives.o SDL_imageFilter.o SDL_rotozoom.o SDL_gfxBlitFunc.o
 
-STATIC_LIB=libSDL_gfx_$(SDL_PREFIX).a
-
+STATIC_LIB := libSDL_gfx_$(SDL_PREFIX).a
 
 all: $(STATIC_LIB)
 
