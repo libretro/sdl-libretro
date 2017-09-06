@@ -2,45 +2,41 @@
 DEBUG = 0
 
 ifeq ($(platform),)
-platform = unix
+   platform := unix
 ifeq ($(shell uname -a),)
-   platform = win
+   platform := win
 else ifneq ($(findstring Darwin,$(shell uname -a)),)
-   platform = osx
+   platform := osx
 else ifneq ($(findstring MINGW,$(shell uname -a)),)
-   platform = win
+   platform := win
 endif
 endif
 
 TARGET_NAME := libSDL_$(platform).a
 
 ifeq ($(platform), unix)
-	CC = gcc
-	CXX = g++
-	CFLAGS = -O2 -Iinclude -D_GNU_SOURCE=1 -Wall -D__LIBRETRO__ -DHAVE_POW -DHAVE_MMAP=0
-	CXXFLAGS = -g -O2  -fno-merge-constants 
+	CFLAGS += -O2 -Iinclude -D_GNU_SOURCE=1 -Wall -D__LIBRETRO__ -DHAVE_POW -DHAVE_MMAP=0
+	CXXFLAGS += -g -O2  -fno-merge-constants
 	TARGET := $(TARGET_NAME)
-	fpic := -fPIC
+	fpic += -fPIC
 #	SHARED := -shared -Wl,--no-undefined -Wl,--version-script=link.T
 	ENDIANNESS_DEFINES := -DLSB_FIRST
 	FLAGS += -D__LINUX__
-	EXTRA_LDF =  -fPIC -lm -lrt -lpthread  
+	EXTRA_LDF += -fPIC -lm -lrt -lpthread
 	SDL_PREFIX := lin
 # android arm
 else ifneq (,$(findstring android,$(platform)))
    	TARGET := $(TARGET_NAME)
-   	fpic = -fPIC
+	fpic += -fPIC
    	SHARED := -lstdc++ -llog -lz -shared -Wl,--version-script=link.T -Wl,--no-undefined
 	CFLAGS +=  -g -O2 
-   	CC = arm-linux-androideabi-gcc
-   	CXX = arm-linux-androideabi-g++
 # cross Windows
 else ifeq ($(platform), wincross64)
 	TARGET := libSDL_win.a
-	AR = x86_64-w64-mingw32-ar
-	CC = x86_64-w64-mingw32-gcc
-	CXX = x86_64-w64-mingw32-g++ 
-	CFLAGS = -O2 -Iinclude -D_GNU_SOURCE=1 -Wall -D__LIBRETRO__
+	AR := x86_64-w64-mingw32-ar
+	CC := x86_64-w64-mingw32-gcc
+	CXX := x86_64-w64-mingw32-g++
+	CFLAGS := -O2 -Iinclude -D_GNU_SOURCE=1 -Wall -D__LIBRETRO__
 #	SHARED := -shared -Wl,--no-undefined -Wl,--version-script=link.T
 	LDFLAGS += -static-libgcc -static-libstdc++ 
 	ENDIANNESS_DEFINES := -DLSB_FIRST
@@ -49,14 +45,14 @@ else ifeq ($(platform), wincross64)
 	SDL_PREFIX := win
 else
    	TARGET :=  libSDL_win.a
-   	CC = gcc
-   	CXX = g++
-	CFLAGS = -O2 -Iinclude -D_GNU_SOURCE=1 -Wall -D__LIBRETRO__
+	CC := gcc
+	CXX := g++
+	CFLAGS += -O2 -Iinclude -D_GNU_SOURCE=1 -Wall -D__LIBRETRO__
 #   	SHARED := -shared -Wl,--no-undefined -Wl,--version-script=link.T
    	LDFLAGS += -static-libgcc -static-libstdc++ 
    	ENDIANNESS_DEFINES := -DLSB_FIRST
    	FLAGS +=
-	EXTRA_LDF = -lwinmm -Wl,--export-all-symbols
+	EXTRA_LDF += -lwinmm -Wl,--export-all-symbols
 	SDL_PREFIX := win
 endif
 
