@@ -30,7 +30,7 @@
 #include "libretro.h"
 
 #include "SDL_LIBRETROkeyboard_c.h"
-extern short int libretro_libretro_input_state_cb(unsigned port,unsigned device,unsigned index,unsigned id);
+extern short int libretro_input_state_cb(unsigned port,unsigned device,unsigned index,unsigned id);
 /*
 extern retro_input_state_t libretro_input_state_cb;
 #define libretro_input_state_cb  input_state_cb
