@@ -144,8 +144,8 @@ LIBRETRO_InitMouse(_THIS)
     this->hidden->_mouseButtons = 0;
     this->hidden->_omx=this->hidden->w/2;//libretro_input_state_cb(0, RETRO_DEVICE_MOUSE, 0, RETRO_DEVICE_ID_MOUSE_Y);
     this->hidden->_omy=this->hidden->h/2;//libretro_input_state_cb(0, RETRO_DEVICE_MOUSE, 0, RETRO_DEVICE_ID_MOUSE_Y);
-printf("[%d,%d]-[%d,%d]\n",this->hidden->w,this->hidden->h,this->hidden->_omx,this->hidden->_omy);
-SDL_PrivateMouseMotion(0, 0, this->hidden->_omx,this->hidden->_omy);
+    // printf("[%d,%d]-[%d,%d]\n",this->hidden->w,this->hidden->h,this->hidden->_omx,this->hidden->_omy);
+    SDL_PrivateMouseMotion(0, 0, this->hidden->_omx,this->hidden->_omy);
 }
 
 void
