@@ -579,7 +579,7 @@ static void LIBRETRO_UnlockHWSurface(_THIS, SDL_Surface *surface)
 	return;
 }
 
-extern libretro_setbuffer(void *pix,Uint16 x,Uint16 y){
+extern void libretro_setbuffer(void *pix,Uint16 x,Uint16 y){
 
 }
 
