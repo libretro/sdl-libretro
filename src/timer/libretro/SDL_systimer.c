@@ -87,7 +87,7 @@ Uint32 SDL_GetTicks (void)
 
 void SDL_Delay (Uint32 ms)
 {
-#warning DELAY LIBRETRO
+	// DELAY LIBRETRO
 #if SDL_THREAD_PTH
 	pth_time_t tv;
 	tv.tv_sec  =  ms/1000;
