@@ -23,8 +23,8 @@
 
 #include "SDL_LIBRETROvideo.h"
 
-extern void LIBRETRO_PumpKeyboard(_THIS);
-extern void LIBRETRO_InitKeyboard(_THIS);
-extern void LIBRETRO_QuitKeyboard(_THIS);
+void LIBRETRO_PumpKeyboard(_THIS);
+void LIBRETRO_InitKeyboard(_THIS);
+void LIBRETRO_QuitKeyboard(_THIS);
 
 /* vi: set ts=4 sw=4 expandtab: */
