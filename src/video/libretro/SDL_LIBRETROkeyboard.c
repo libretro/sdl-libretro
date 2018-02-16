@@ -38,150 +38,150 @@ extern retro_input_state_t libretro_input_state_cb;
 
 #define RETROMOD(a,i) {\
         SDL_keysym sym;\
-	    memset(&sym, 0, sizeof(SDL_keysym));\
+        memset(&sym, 0, sizeof(SDL_keysym));\
         sym.scancode=i;\
         sym.sym=i;\
-	    SDL_PrivateKeyboard(a ? SDL_PRESSED : SDL_RELEASED, &sym);\
-}  
+        SDL_PrivateKeyboard(a ? SDL_PRESSED : SDL_RELEASED, &sym);\
+}
 
  void Process_key(_THIS)
 {
-	int i;
+    int i;
 
-	for(i=0;i<322;i++)
-        	this->hidden->Key_Sate[i]=libretro_input_state_cb(0, RETRO_DEVICE_KEYBOARD, 0,i) ? 0x80: 0;
-   
-	if(memcmp( this->hidden->Key_Sate,this->hidden->old_Key_Sate , sizeof(this->hidden->Key_Sate) ) )
-	 	for(i=0;i<322;i++)
-			if(this->hidden->Key_Sate[i] && this->hidden->Key_Sate[i]!=this->hidden->old_Key_Sate[i]  )
-        	{
+    for (i = 0; i < 322; i++)
+            this->hidden->Key_Sate[i]=libretro_input_state_cb(0, RETRO_DEVICE_KEYBOARD, 0,i) ? 0x80: 0;
 
-				if(i==RETROK_RCTRL){
-					//CTRLON=-CTRLON;
-					//printf("Modifier crtl pressed %d \n",CTRLON); 
+    if (memcmp(this->hidden->Key_Sate,this->hidden->old_Key_Sate , sizeof(this->hidden->Key_Sate))) {
+        for (i = 0; i < 322; i++) {
+            if(this->hidden->Key_Sate[i] && this->hidden->Key_Sate[i]!=this->hidden->old_Key_Sate[i])
+            {
+
+                if(i==RETROK_RCTRL){
+                    //CTRLON=-CTRLON;
+                    //printf("Modifier crtl pressed %d \n",CTRLON);
                     RETROMOD(1,i);
-					continue;
-				}
-				if(i==RETROK_RSHIFT){
-					//SHITFON=-SHITFON;
-					//printf("Modifier shift pressed %d \n",SHIFTON); 
+                    continue;
+                }
+                if(i==RETROK_RSHIFT){
+                    //SHITFON=-SHITFON;
+                    //printf("Modifier shift pressed %d \n",SHIFTON);
                     RETROMOD(1,i);
-					continue;
-				}
+                    continue;
+                }
 
-				if(i==RETROK_LCTRL){
-					//CTRLON=-CTRLON;
-					//printf("Modifier crtl pressed %d \n",CTRLON); 
+                if(i==RETROK_LCTRL){
+                    //CTRLON=-CTRLON;
+                    //printf("Modifier crtl pressed %d \n",CTRLON);
                     RETROMOD(1,i);
-					continue;
-				}
-				if(i==RETROK_LSHIFT){
-					//SHITFON=-SHITFON;
-					//printf("Modifier shift pressed %d \n",SHIFTON); 
+                    continue;
+                }
+                if(i==RETROK_LSHIFT){
+                    //SHITFON=-SHITFON;
+                    //printf("Modifier shift pressed %d \n",SHIFTON);
                     RETROMOD(1,i);
-					continue;
-				}
+                    continue;
+                }
 
-				if(i==RETROK_LALT){
-					//KBMOD=-KBMOD;
-					//printf("Modifier alt pressed %d \n",KBMOD); 
+                if(i==RETROK_LALT){
+                    //KBMOD=-KBMOD;
+                    //printf("Modifier alt pressed %d \n",KBMOD);
                     RETROMOD(1,i);
-					continue;
-				}
-				if(i==RETROK_RALT){
-					//KBMOD=-KBMOD;
-					//printf("Modifier alt pressed %d \n",KBMOD); 
+                    continue;
+                }
+                if(i==RETROK_RALT){
+                    //KBMOD=-KBMOD;
+                    //printf("Modifier alt pressed %d \n",KBMOD);
                     RETROMOD(1,i);
-					continue;
-				}
+                    continue;
+                }
 
-				if(i==RETROK_LMETA){
-					//KBMOD=-KBMOD;
-					//printf("Modifier alt pressed %d \n",KBMOD);
-                    RETROMOD(1,i); 
-					continue;
-				}
-				if(i==RETROK_RMETA){
-					//KBMOD=-KBMOD;
-					//printf("Modifier alt pressed %d \n",KBMOD); 
+                if(i==RETROK_LMETA){
+                    //KBMOD=-KBMOD;
+                    //printf("Modifier alt pressed %d \n",KBMOD);
                     RETROMOD(1,i);
-					continue;
-				}
-
-				//printf("press: %d \n",i);
+                    continue;
+                }
+                if(i==RETROK_RMETA){
+                    //KBMOD=-KBMOD;
+                    //printf("Modifier alt pressed %d \n",KBMOD);
                     RETROMOD(1,i);
-				//retro_key_down(i);
-	
-        	}	
-        	else if ( !this->hidden->Key_Sate[i] && this->hidden->Key_Sate[i]!=this->hidden->old_Key_Sate[i]  )
-        	{
+                    continue;
+                }
 
-				if(i==RETROK_RCTRL){
-					//CTRLON=-CTRLON;
-					//printf("Modifier crtl released %d \n",CTRLON); 
-                    RETROMOD(0,i);
-					continue;
-				}
-				if(i==RETROK_RSHIFT){
-					//SHIFTON=-SHIFTON;
-					//printf("Modifier shift released %d \n",SHIFTON); 
-                    RETROMOD(0,i);
-					continue;
-				}
+                //printf("press: %d \n",i);
+                    RETROMOD(1,i);
+                //retro_key_down(i);
 
-				if(i==RETROK_LCTRL){
-					//CTRLON=-CTRLON;
-					//printf("Modifier crtl pressed %d \n",CTRLON); 
+            }
+            else if ( !this->hidden->Key_Sate[i] && this->hidden->Key_Sate[i]!=this->hidden->old_Key_Sate[i])
+            {
+                if(i==RETROK_RCTRL){
+                    //CTRLON=-CTRLON;
+                    //printf("Modifier crtl released %d \n",CTRLON);
                     RETROMOD(0,i);
-					continue;
-				}
-				if(i==RETROK_LSHIFT){
-					//SHITFON=-SHITFON;
-					//printf("Modifier shift pressed %d \n",SHIFTON); 
+                    continue;
+                }
+                if(i==RETROK_RSHIFT){
+                    //SHIFTON=-SHIFTON;
+                    //printf("Modifier shift released %d \n",SHIFTON);
                     RETROMOD(0,i);
-					continue;
-				}
+                    continue;
+                }
 
-				if(i==RETROK_LALT){
-//					KBMOD=-KBMOD;
-					//printf("Modifier alt released %d \n",KBMOD); 
+                if(i==RETROK_LCTRL){
+                    //CTRLON=-CTRLON;
+                    //printf("Modifier crtl pressed %d \n",CTRLON);
                     RETROMOD(0,i);
-					continue;
-				}
-				if(i==RETROK_RALT){
-					//KBMOD=-KBMOD;
-					//printf("Modifier alt pressed %d \n",KBMOD); 
+                    continue;
+                }
+                if(i==RETROK_LSHIFT){
+                    //SHITFON=-SHITFON;
+                    //printf("Modifier shift pressed %d \n",SHIFTON);
                     RETROMOD(0,i);
-					continue;
-				}
+                    continue;
+                }
 
-				if(i==RETROK_LMETA){
-					//KBMOD=-KBMOD;
-					//printf("Modifier alt pressed %d \n",KBMOD); 
+                if(i==RETROK_LALT){
+                    //KBMOD=-KBMOD;
+                    //printf("Modifier alt released %d \n",KBMOD);
                     RETROMOD(0,i);
-					continue;
-				}
-				if(i==RETROK_RMETA){
-					//KBMOD=-KBMOD;
-					//printf("Modifier alt pressed %d \n",KBMOD); 
+                    continue;
+                }
+                if(i==RETROK_RALT){
+                    //KBMOD=-KBMOD;
+                    //printf("Modifier alt pressed %d \n",KBMOD);
                     RETROMOD(0,i);
-					continue;
-				}
+                    continue;
+                }
 
-				//printf("release: %d \n",i);
+                if(i==RETROK_LMETA){
+                    //KBMOD=-KBMOD;
+                    //printf("Modifier alt pressed %d \n",KBMOD);
                     RETROMOD(0,i);
-				//retro_key_up(i);
-	
-        	}	
+                    continue;
+                }
+                if(i==RETROK_RMETA){
+                    //KBMOD=-KBMOD;
+                    //printf("Modifier alt pressed %d \n",KBMOD);
+                    RETROMOD(0,i);
+                    continue;
+                }
 
-	memcpy(this->hidden->old_Key_Sate,this->hidden->Key_Sate , sizeof(this->hidden->Key_Sate) );
+                //printf("release: %d \n",i);
+                RETROMOD(0,i);
+                //retro_key_up(i);
+            }
+        }
+    }
+
+    memcpy(this->hidden->old_Key_Sate,this->hidden->Key_Sate , sizeof(this->hidden->Key_Sate) );
 
 }
 
 
 void LIBRETRO_PumpKeyboard(_THIS)
-{    
-        Process_key(this);
+{
+    Process_key(this);
 }
 
 void
