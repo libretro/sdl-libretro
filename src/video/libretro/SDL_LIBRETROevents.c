@@ -29,6 +29,9 @@
 
 #include "libretro.h"
 
+void LIBRETRO_PumpMouse(_THIS);
+void LIBRETRO_PumpKeyboard(_THIS);
+
 void LIBRETRO_PumpEvents(_THIS)
 {
        // input_poll_cb();
