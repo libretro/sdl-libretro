@@ -172,8 +172,10 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "Unable to init SDL: %s\n", SDL_GetError());
 		exit(1);
 	}
+#ifndef __LIBRETRO__
 	// atexit : Quand on quittera (exit, return...), SDL_Quit() sera appelée.
 	atexit(SDL_Quit);
+#endif
 
 	// Video mode init.
 	Render_InitVideo();

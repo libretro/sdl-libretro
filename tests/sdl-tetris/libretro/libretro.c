@@ -464,7 +464,10 @@ void retro_deinit(void)
 
   LOGI("exit emu\n");
   co_switch(emuThread);
-
+  {
+    extern void SDL_Quit(void);
+    SDL_Quit();
+  }
   co_switch(mainThread);
   LOGI("exit main\n");
 
