@@ -55,7 +55,16 @@ struct joystick_hwdata
 };
 
 static SDL_LIBRETRO_JoyData joy_data[4];
-static int vbt[16]=	{0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80,0x100,0x200,0x400,0x800,0x1000,0x2000,0x4000,0x8000};
+
+//   RETRO        B    Y    SLT  STA  UP   DWN  LEFT RGT  A    X    L    R    L2   R2   L3   R3
+//   retro index  0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15
+//   retro mask   0001 0002 0004 0008 0010 0020 0040 0080 0100 0200 0400 0800 1000 2000 4000 8000
+
+
+
+/*                                   A      B      X      Y      LSH    RSH    BACK   START  GUIDE  LS     RS  	                                           - SDL button name   */
+/*                                   0      1      2      3      4      5      6      7      8      9      10     11     12     13     14     15	   - SDL button number */
+static const unsigned short vbt[] = {0x0100,0x0001,0x0200,0x0002,0x1000,0x2000,0x0004,0x0008,0x0080,0x0400,0x0800,0x0040,0x0010,0x0020,0x4000,0x8000};  /* - retro button mask */
 
 /* Function to scan the system for joysticks.
  * This function should set SDL_numjoysticks to the number of available
@@ -125,47 +134,45 @@ joystick->hwdata->an[3]=0;
  * but instead should call SDL_PrivateJoystick*() to deliver events
  * and update joystick device state.
  */
-//   RETRO        B    Y    SLT  STA  UP   DWN  LEFT RGT  A    X    L    R    L2   R2   L3   R3
-//   INDEX        0    1    2    3    4    5    6    7    8    9    10   11   12   13   14   15
 void
 SDL_SYS_JoystickUpdate(SDL_Joystick * joystick)
 {
-	  unsigned short int new_pad_data=0;
-      int new_an[4];
-      int i;
+	unsigned short int pad_retromask = 0;
+	int new_an[4];
+	int i;
 
-      for(i=0;i<16;i++)
-           if( libretro_input_state_cb(joystick->index, RETRO_DEVICE_JOYPAD, 0, i))
-                new_pad_data |= vbt[i];
+	for (i=0; i < sizeof(vbt)/sizeof(*vbt); i++)
+		if (libretro_input_state_cb(joystick->index, RETRO_DEVICE_JOYPAD, 0, i))
+			pad_retromask |= (1 << i);
 
-      for(i=0;i<16;i++){
-            if( new_pad_data != joystick->hwdata->old_pad_data) {
-                if( (new_pad_data&vbt[i]) == 0){ 
-		            SDL_PrivateJoystickButton( joystick, (i), SDL_RELEASED); 
-                }
-		        else {
-		            SDL_PrivateJoystickButton( joystick, (i), SDL_PRESSED); 
-                }
-            }
-            joystick->hwdata->old_pad_data = new_pad_data;
-      }
+	if (pad_retromask != joystick->hwdata->old_pad_data) {
+		for (i=0; i < sizeof(vbt)/sizeof(*vbt); i++) {
+			if ((pad_retromask ^ joystick->hwdata->old_pad_data) & vbt[i]) {
+				if ((pad_retromask & vbt[i]) == 0) {
+					SDL_PrivateJoystickButton( joystick, (i), SDL_RELEASED);
+				}
+				else {
+					SDL_PrivateJoystickButton( joystick, (i), SDL_PRESSED);
+				}
+			}
+		}
+		joystick->hwdata->old_pad_data = pad_retromask;
+	}
 
-      new_an[0] = (libretro_input_state_cb(joystick->index, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_LEFT,  RETRO_DEVICE_ID_ANALOG_X));
-      new_an[1] = (libretro_input_state_cb(joystick->index, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_LEFT,  RETRO_DEVICE_ID_ANALOG_Y));
-      new_an[2] = (libretro_input_state_cb(joystick->index, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_RIGHT, RETRO_DEVICE_ID_ANALOG_X));
-      new_an[3] = (libretro_input_state_cb(joystick->index, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_RIGHT, RETRO_DEVICE_ID_ANALOG_Y));
+	new_an[0] = (libretro_input_state_cb(joystick->index, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_LEFT,  RETRO_DEVICE_ID_ANALOG_X));
+	new_an[1] = (libretro_input_state_cb(joystick->index, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_LEFT,  RETRO_DEVICE_ID_ANALOG_Y));
+	new_an[2] = (libretro_input_state_cb(joystick->index, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_RIGHT, RETRO_DEVICE_ID_ANALOG_X));
+	new_an[3] = (libretro_input_state_cb(joystick->index, RETRO_DEVICE_ANALOG, RETRO_DEVICE_INDEX_ANALOG_RIGHT, RETRO_DEVICE_ID_ANALOG_Y));
 
-      for(i=0;i<4;i++){
+	for (i=0; i<4; i++) {
 	        if( new_an[i] != joystick->hwdata->an[i]) {
-		        SDL_PrivateJoystickAxis( joystick, i, new_an[i]); 
-	        } 
+		        SDL_PrivateJoystickAxis( joystick, i, new_an[i]);
+	        }
 	        joystick->hwdata->an[i] = new_an[i];
-      }
+	}
 
-
-
-    return;
-} 
+	return;
+}
 
 /* Function to close a joystick after use */
 void
